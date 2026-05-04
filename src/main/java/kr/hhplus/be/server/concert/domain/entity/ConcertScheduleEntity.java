@@ -65,7 +65,7 @@ public class ConcertScheduleEntity extends BaseTimeEntity {
     public ConcertSchedule toModel() {
         return new ConcertSchedule(
             this.id, this.concertId, this.concertDate, this.startTime,
-            this.availableSeats, ScheduleStatus.valueOf(this.status), this.getCreatedAt()
+            this.availableSeats, ScheduleStatus.valueOf(this.status), this.getCreatedAt(), this.getUpdatedAt()
         );
     }
 }

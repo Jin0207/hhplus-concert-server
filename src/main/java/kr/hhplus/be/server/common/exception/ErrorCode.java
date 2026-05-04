@@ -3,8 +3,8 @@ package kr.hhplus.be.server.common.exception;
 public enum ErrorCode {
 
     // ===================== Common =====================
-    REQUIRED("CM001", "%s는 필수 입력입니다."),
-    TOO_LONG("CM002", "%s는 %d자 이내 입력하셔야합니다."),
+    REQUIRED("CM001", "%s은(는) 필수 입력입니다."),
+    TOO_LONG("CM002", "%s은(는) %d자 이내 입력하셔야합니다."),
     INVALID_AMOUNT("CM003", "%s 금액은 0보다 커야 합니다."),
     NOT_FOUND("CM004", "%s을(를) 찾을 수 없습니다."),
 

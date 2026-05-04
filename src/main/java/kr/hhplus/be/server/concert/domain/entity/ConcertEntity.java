@@ -46,6 +46,6 @@ public class ConcertEntity extends BaseTimeEntity {
     }
 
     public Concert toModel() {
-        return new Concert(this.id, this.title, this.venue, this.artist, this.getCreatedAt());
+        return new Concert(this.id, this.title, this.venue, this.artist, this.getCreatedAt(), this.getUpdatedAt());
     }
 }

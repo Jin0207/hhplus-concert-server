@@ -2,13 +2,16 @@ package kr.hhplus.be.server.queue.domain.vo;
 
 import java.util.UUID;
 
+import kr.hhplus.be.server.common.exception.BusinessException;
+import kr.hhplus.be.server.common.exception.ErrorCode;
+
 public class Token {
 
     private final String value;
 
     private Token(String value) {
         if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("토큰 값은 비어있을 수 없습니다.");
+            throw new BusinessException(ErrorCode.REQUIRED, "토큰 값");
         }
         this.value = value;
     }

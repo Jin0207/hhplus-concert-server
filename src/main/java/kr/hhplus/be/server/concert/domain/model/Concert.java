@@ -7,9 +7,10 @@ public record Concert(
         String title,
         String venue,
         String artist,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
     public static Concert create(String title, String venue, String artist) {
-        return new Concert(null, title, venue, artist, null);
+        return new Concert(null, title, venue, artist, null, null);
     }
 }

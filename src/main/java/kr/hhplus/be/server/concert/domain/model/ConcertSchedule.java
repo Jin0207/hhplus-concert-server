@@ -15,10 +15,11 @@ public record ConcertSchedule(
         LocalTime startTime,
         int availableSeats,
         ScheduleStatus status,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
     public static ConcertSchedule create(Long concertId, LocalDate concertDate, LocalTime startTime, int availableSeats) {
-        return new ConcertSchedule(null, concertId, concertDate, startTime, availableSeats, ScheduleStatus.OPEN, null);
+        return new ConcertSchedule(null, concertId, concertDate, startTime, availableSeats, ScheduleStatus.OPEN, null, null);
     }
 
     public ConcertSchedule decreaseAvailableSeats() {
@@ -27,13 +28,13 @@ public record ConcertSchedule(
         }
         int newSeats = this.availableSeats - 1;
         ScheduleStatus newStatus = newSeats == 0 ? ScheduleStatus.SOLD_OUT : this.status;
-        return new ConcertSchedule(id, concertId, concertDate, startTime, newSeats, newStatus, createdAt);
+        return new ConcertSchedule(id, concertId, concertDate, startTime, newSeats, newStatus, createdAt, updatedAt);
     }
 
     public ConcertSchedule increaseAvailableSeats() {
         int newSeats = this.availableSeats + 1;
         ScheduleStatus newStatus = this.status == ScheduleStatus.SOLD_OUT ? ScheduleStatus.OPEN : this.status;
-        return new ConcertSchedule(id, concertId, concertDate, startTime, newSeats, newStatus, createdAt);
+        return new ConcertSchedule(id, concertId, concertDate, startTime, newSeats, newStatus, createdAt, updatedAt);
     }
 
     public boolean isOpen() {
