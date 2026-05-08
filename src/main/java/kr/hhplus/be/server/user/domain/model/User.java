@@ -42,7 +42,7 @@ public record User(
     public User usePoint(long amount) {
         validateAmount(amount, "사용");
 
-        if(amount > MIN_AMOUNT){
+        if(amount < MIN_AMOUNT){
             throw new BusinessException(ErrorCode.USER_POINT_USE_MIN);
         }
         if (this.point < amount) {
