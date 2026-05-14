@@ -51,6 +51,8 @@ dependencies {
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:mysql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	// H2 인메모리 DB로 오버라이드
+	testRuntimeOnly("com.h2database:h2")
 }
 
 tasks.withType<Test> {
