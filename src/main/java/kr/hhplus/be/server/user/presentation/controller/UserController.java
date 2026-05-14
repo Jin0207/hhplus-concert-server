@@ -16,6 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import kr.hhplus.be.server.user.application.UserService;
+import kr.hhplus.be.server.user.domain.model.User;
 import kr.hhplus.be.server.user.presentation.dto.request.ChargePointRequest;
 import kr.hhplus.be.server.user.presentation.dto.response.UserPointResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/users")
 @Tag(name = "User", description = "사용자 관리 API")
 public class UserController {
+
+        private final UserService userService;
 
         @Operation(summary = "포인트 충전", description = "사용자의 포인트를 충전합니다.")
         @ApiResponses({
@@ -40,7 +44,8 @@ public class UserController {
                 @Parameter(description = "사용자 ID", example = "1") @PathVariable Long id,
                 @Valid @RequestBody ChargePointRequest request
         ) {
-        return ResponseEntity.ok(new UserPointResponse(id, 0L));
+                User chargedUser = userService.chargePoint(id, request.amount());
+                return ResponseEntity.ok(UserPointResponse.from(chargedUser));
         }
 
         @Operation(summary = "포인트 조회", description = "사용자의 현재 보유 포인트를 조회합니다.")
@@ -54,6 +59,7 @@ public class UserController {
         public ResponseEntity<UserPointResponse> getPoint(
         @Parameter(description = "사용자 ID", example = "1") @Valid @PathVariable Long id
         ) {
-        return ResponseEntity.ok(new UserPointResponse(id, 0L));
+                User user = userService.getUser(id);
+                return ResponseEntity.ok(UserPointResponse.from(user));
         }
 }

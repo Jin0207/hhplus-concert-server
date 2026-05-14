@@ -14,8 +14,8 @@ public record User(
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
-    public static final long MAX_AMOUNT = 1_000_000L;
-    public static final long MIN_AMOUNT = 1_000L;
+    public static final long MAX_BALANCE = 1_000_000L; // 최대 보유포인트
+    public static final long MIN_TRANSACTION = 1_000L; // 최소 거래 단위
 
     public static User create(String loginId, String password, String name) {
         validateUserId(loginId);
@@ -29,10 +29,11 @@ public record User(
      *   포인트(Point)
      */
     public User chargePoint(long amount) {
+        validateAmount(amount, "충전");
+
         long finalPoint = point + amount;
 
-        validateAmount(amount, "충전");
-        if(finalPoint > MAX_AMOUNT){
+        if(finalPoint > MAX_BALANCE){
             throw new BusinessException(ErrorCode.USER_POINT_MAX, this.point);
         }
 
@@ -42,9 +43,6 @@ public record User(
     public User usePoint(long amount) {
         validateAmount(amount, "사용");
 
-        if(amount < MIN_AMOUNT){
-            throw new BusinessException(ErrorCode.USER_POINT_USE_MIN);
-        }
         if (this.point < amount) {
             throw new BusinessException(ErrorCode.USER_POINT_INSUFFICIENT, this.point);
         }
@@ -54,11 +52,17 @@ public record User(
 
     /*
     *   검증(Validation)
+    *   amount:포인트액, purpose:용도(충전/사용)
     */
-    public static void validateAmount(long amount, String prefix){
+    public static void validateAmount(long amount, String purpose){
         if (amount <= 0) {
-            throw new BusinessException(ErrorCode.INVALID_AMOUNT, prefix);
+            throw new BusinessException(ErrorCode.INVALID_AMOUNT, purpose);
         }
+
+        if(amount < MIN_TRANSACTION){
+            throw new BusinessException(ErrorCode.USER_POINT_MIN, purpose);
+        }
+
     }
 
     public static void validateUserId(String loginId) {

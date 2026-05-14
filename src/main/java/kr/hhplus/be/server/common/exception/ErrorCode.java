@@ -13,7 +13,7 @@ public enum ErrorCode {
     // ===================== User =====================
     USER_POINT_INSUFFICIENT("U001", "포인트 잔액이 부족합니다. (현재 잔액: %d원)", HttpStatus.CONFLICT),
     USER_POINT_MAX("U002", "최대 보유포인트는 1,000,000원입니다. (현재 잔액: %d원)", HttpStatus.CONFLICT),
-    USER_POINT_USE_MIN("U003", "최소 사용 포인트는 1,000원입니다.", HttpStatus.BAD_REQUEST),
+    USER_POINT_MIN("U003", "최소 %s 포인트는 1,000원입니다.", HttpStatus.BAD_REQUEST),
 
     // ===================== Concert =====================
     CONCERT_NOT_FOUND("C001", "콘서트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
