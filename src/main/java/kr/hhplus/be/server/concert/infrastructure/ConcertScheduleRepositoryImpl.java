@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.concert.infrastructure;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -15,12 +17,18 @@ public class ConcertScheduleRepositoryImpl implements ConcertScheduleRepository{
     private final ConcertScheduleJpaRepository jpaRepository;
 
     @Override
-    public List<ConcertSchedule> availableDates(Long concertId){
-        List<ConcertSchedule> concertSchedules = jpaRepository.availableDates(concertId)
+    public List<ConcertSchedule> getAvailableDates(Long concertId){
+        List<ConcertSchedule> concertSchedules = jpaRepository.findAvailableDatesByConcertId(concertId)
             .stream()
             .map(ConcertScheduleEntity::toModel)
             .toList();
         
         return concertSchedules;
+    }
+
+    @Override
+    public Optional<ConcertSchedule> getConcertSchedule(Long concertId, LocalDate concertDate) {
+        return jpaRepository.findByConcertIdAndConcertDate(concertId, concertDate)
+            .map(ConcertScheduleEntity::toModel);
     }
 }

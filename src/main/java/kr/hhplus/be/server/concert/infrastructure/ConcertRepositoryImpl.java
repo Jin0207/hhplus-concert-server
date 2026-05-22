@@ -21,12 +21,4 @@ public class ConcertRepositoryImpl implements ConcertRepository{
         return jpaRepository.findById(id).map(ConcertEntity::toModel);
     }
 
-    @Override
-    public List<Concert> findConcerts() {
-        return jpaRepository.findConcerts()
-                .stream()
-                .map(ConcertEntity::toModel)
-                .toList();
-    }
-
 }

@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.concert.application;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -23,10 +24,5 @@ public class ConcertService {
         
         log.debug("콘서트 정보 - {}", concert);
         return concert;
-    }
-
-    public List<Concert> getConcertList(){
-        List<Concert> concerts = concertRepository.findConcerts(null);
-        return concerts;
     }
 }
