@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.queue.domain.entity;
+package kr.hhplus.be.server.queue.infrastructure.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
