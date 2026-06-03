@@ -2,6 +2,7 @@ package kr.hhplus.be.server.user.domain.model;
 
 import kr.hhplus.be.server.common.exception.BusinessException;
 import kr.hhplus.be.server.common.exception.ErrorCode;
+import kr.hhplus.be.server.user.domain.validator.UserValidator;
 
 import java.time.LocalDateTime;
 
@@ -18,9 +19,9 @@ public record User(
     public static final long MIN_TRANSACTION = 1_000L; // 최소 거래 단위
 
     public static User create(String loginId, String password, String name) {
-        validateUserId(loginId);
-        validatePassword(password);
-        validateName(name);
+        UserValidator.validateUserId(loginId);
+        UserValidator.validatePassword(password);
+        UserValidator.validateName(name);
         
         return new User(null, loginId, password, name, 0L, null, null);
     }
@@ -29,11 +30,12 @@ public record User(
      *   포인트(Point)
      */
     public User chargePoint(long amount) {
-        validateAmount(amount, "충전");
+        UserValidator.validateAmount(amount, "충전");
 
         long finalPoint = point + amount;
 
         if(finalPoint > MAX_BALANCE){
+            // 최대 보유포인트는 1,000,000원입니다.
             throw new BusinessException(ErrorCode.USER_POINT_MAX, this.point);
         }
 
@@ -41,49 +43,14 @@ public record User(
     }
 
     public User usePoint(long amount) {
-        validateAmount(amount, "사용");
+        UserValidator.validateAmount(amount, "사용");
 
         if (this.point < amount) {
+            // 포인트 잔액이 부족합니다.
             throw new BusinessException(ErrorCode.USER_POINT_INSUFFICIENT, this.point);
         }
 
         return new User(id, loginId, password, name, point - amount, createdAt, updatedAt);
-    }
-
-    /*
-    *   검증(Validation)
-    *   amount:포인트액, purpose:용도(충전/사용)
-    */
-    public static void validateAmount(long amount, String purpose){
-        if (amount <= 0) {
-            throw new BusinessException(ErrorCode.INVALID_AMOUNT, purpose);
-        }
-
-        if(amount < MIN_TRANSACTION){
-            throw new BusinessException(ErrorCode.USER_POINT_MIN, purpose);
-        }
-
-    }
-
-    public static void validateUserId(String loginId) {
-        if (loginId == null || loginId.isEmpty()) {
-            throw new BusinessException(ErrorCode.REQUIRED, "로그인ID");
-        }
-        if (loginId.length() > 100) {
-            throw new BusinessException(ErrorCode.TOO_LONG, "로그인ID", 100);
-        }
-    }
-
-    public static void validatePassword(String password) {
-        if (password == null || password.isEmpty()) {
-            throw new BusinessException(ErrorCode.REQUIRED, "패스워드");
-        }
-    }
-
-    public static void validateName(String name) {
-        if (name == null || name.isEmpty()) {
-            throw new BusinessException(ErrorCode.REQUIRED, "사용자명");
-        }
     }
 
     /*

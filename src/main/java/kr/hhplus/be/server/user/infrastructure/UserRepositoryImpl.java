@@ -5,13 +5,13 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 import kr.hhplus.be.server.user.domain.model.User;
-import kr.hhplus.be.server.user.domain.repository.UserRepository;
+import kr.hhplus.be.server.user.domain.repository.LockableUserRepository;
 import kr.hhplus.be.server.user.infrastructure.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl implements LockableUserRepository {
 
     private final UserJpaRepository jpaRepository;
 
