@@ -17,7 +17,7 @@ public class ConcertScheduleRepositoryImpl implements ConcertScheduleRepository{
     private final ConcertScheduleJpaRepository jpaRepository;
 
     @Override
-    public List<ConcertSchedule> getAvailableDates(Long concertId){
+    public List<ConcertSchedule> findAvailableDates(Long concertId){
         List<ConcertSchedule> concertSchedules = jpaRepository.findAvailableDatesByConcertId(concertId)
             .stream()
             .map(ConcertScheduleEntity::toModel)
@@ -27,7 +27,7 @@ public class ConcertScheduleRepositoryImpl implements ConcertScheduleRepository{
     }
 
     @Override
-    public Optional<ConcertSchedule> getConcertSchedule(Long concertId, LocalDate concertDate) {
+    public Optional<ConcertSchedule> findConcertSchedule(Long concertId, LocalDate concertDate) {
         return jpaRepository.findByConcertIdAndConcertDate(concertId, concertDate)
             .map(ConcertScheduleEntity::toModel);
     }

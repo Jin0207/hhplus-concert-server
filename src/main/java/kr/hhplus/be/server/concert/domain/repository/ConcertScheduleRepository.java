@@ -9,8 +9,8 @@ import kr.hhplus.be.server.concert.domain.model.ConcertSchedule;
 public interface ConcertScheduleRepository {
 
     // 예약가능한 날짜 목록 조회
-    List<ConcertSchedule> getAvailableDates(Long concertId);
+    List<ConcertSchedule> findAvailableDates(Long concertId);
 
     // 해당콘서트 지정날짜의 콘서트스케줄 조회
-    Optional<ConcertSchedule> getConcertSchedule(Long concertId, LocalDate concertDate);
+    Optional<ConcertSchedule> findConcertSchedule(Long concertId, LocalDate concertDate);
 }
