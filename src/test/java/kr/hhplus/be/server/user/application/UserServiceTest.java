@@ -1,10 +1,10 @@
 package kr.hhplus.be.server.user.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -20,13 +20,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import kr.hhplus.be.server.common.exception.BusinessException;
 import kr.hhplus.be.server.common.exception.ErrorCode;
 import kr.hhplus.be.server.user.domain.model.User;
-import kr.hhplus.be.server.user.domain.repository.UserRepository;
+import kr.hhplus.be.server.user.domain.repository.LockableUserRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
     
     @Mock
-    private UserRepository userRepository;
+    private LockableUserRepository userRepository;
     
     @InjectMocks
     private UserService userService;

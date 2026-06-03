@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kr.hhplus.be.server.seat.application.SeatService;
 import kr.hhplus.be.server.seat.domain.model.Seat;
 import kr.hhplus.be.server.seat.domain.repository.SeatRepository;
 
@@ -20,24 +19,24 @@ import kr.hhplus.be.server.seat.domain.repository.SeatRepository;
 public class SeatServiceTest {
 
     @Mock
-    private SeatRepository repository;
+    private SeatRepository seatRepository;
 
     @InjectMocks
-    private SeatService service;
+    private SeatService seatService;
 
     @Test
     @DisplayName("성공: 콘서트 예약 가능 좌석 조회")
     void 예약_가능_좌석_조회() {
         Long scheduleId = 1L;
 
-        List<Seat> seatList = List.of(
+        List<Seat> seatList = List.of(a
             Seat.create(scheduleId, 1, 50000L),
             Seat.create(scheduleId, 2, 50000L)
         );
 
-        when(repository.findSeats(scheduleId)).thenReturn(seatList);
+        when(seatRepository.findSeats(scheduleId)).thenReturn(seatList);
 
-        List<Seat> result = service.getSeatList(scheduleId);
+        List<Seat> result = seatService.getSeatList(scheduleId);
 
         assertThat(result).hasSize(2);
         assertThat(result).isEqualTo(seatList);
