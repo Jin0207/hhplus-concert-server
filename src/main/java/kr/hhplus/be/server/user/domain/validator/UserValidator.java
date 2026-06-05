@@ -2,11 +2,9 @@ package kr.hhplus.be.server.user.domain.validator;
 
 import kr.hhplus.be.server.common.exception.BusinessException;
 import kr.hhplus.be.server.common.exception.ErrorCode;
+import kr.hhplus.be.server.user.domain.model.User;
 
 public class UserValidator {
-
-    public static final long MAX_BALANCE = 1_000_000L; // 최대 보유포인트
-    public static final long MIN_TRANSACTION = 1_000L; // 최소 거래 단위
 
     public static void validateAmount(long amount, String purpose){
         if (amount <= 0) {
@@ -14,7 +12,7 @@ public class UserValidator {
             throw new BusinessException(ErrorCode.INVALID_AMOUNT, purpose);
         }
 
-        if(amount < MIN_TRANSACTION){
+        if(amount < User.MIN_TRANSACTION){
             // 최소 %s 포인트는 1,000원입니다.
             throw new BusinessException(ErrorCode.USER_POINT_MIN, purpose);
         }

@@ -21,6 +21,10 @@ public class ConcertScheduleService {
     // 예약가능한 날짜 목록 조회
     public List<ConcertSchedule> getAvailableDates(Long concertId){
         List<ConcertSchedule> list = concertScheduleRepository.findAvailableDates(concertId);
+
+        if(list.isEmpty()){
+            throw new BusinessException(ErrorCode.CONCERT_SCHEDULE_NOT_FOUND);
+        }
         log.debug("예약가능한 날짜 목록 - {}", list);
         return list;
     }
