@@ -2,6 +2,7 @@ package kr.hhplus.be.server.concert.presentation.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.hhplus.be.server.concert.domain.enums.ScheduleStatus;
+import kr.hhplus.be.server.concert.domain.model.ConcertSchedule;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -20,4 +21,15 @@ public record ConcertScheduleResponse(
         int availableSeats,
         @Schema(description = "일정 상태", example = "OPEN")
         ScheduleStatus status
-) {}
+) {
+    public static ConcertScheduleResponse from(ConcertSchedule schedule) {
+        return new ConcertScheduleResponse(
+            schedule.id(),
+            schedule.concertId(),
+            schedule.concertDate(),
+            schedule.startTime(),
+            schedule.availableSeats(),
+            schedule.status()
+        );
+    }
+}

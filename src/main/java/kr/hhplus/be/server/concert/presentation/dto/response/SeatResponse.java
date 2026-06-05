@@ -2,6 +2,7 @@ package kr.hhplus.be.server.concert.presentation.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.hhplus.be.server.seat.domain.enums.SeatStatus;
+import kr.hhplus.be.server.seat.domain.model.Seat;
 
 @Schema(description = "좌석 응답")
 public record SeatResponse(
@@ -15,4 +16,14 @@ public record SeatResponse(
         long price,
         @Schema(description = "좌석 상태", example = "AVAILABLE")
         SeatStatus status
-) {}
+) {
+    public static SeatResponse from(Seat seat) {
+        return new SeatResponse(
+            seat.id(),
+            seat.scheduleId(),
+            seat.seatNumber().getValue(),
+            seat.price(),
+            seat.status()
+        );
+    }
+}
