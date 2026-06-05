@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class SeatRepositroyImpl implements SeatRepository{
+public class SeatRepositoryImpl implements SeatRepository{
     
     private final SeatJpaRepository jpaRepository;
 
