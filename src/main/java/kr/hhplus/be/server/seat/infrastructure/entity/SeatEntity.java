@@ -61,7 +61,7 @@ public class SeatEntity extends BaseTimeEntity {
     public Seat toModel() {
         return new Seat(
             this.id, this.scheduleId, SeatNumber.of(this.seatNumber),
-            this.price, SeatStatus.valueOf(this.status), this.getCreatedAt()
+            this.price, SeatStatus.valueOf(this.status), this.getCreatedAt(), this.getUpdatedAt()
         );
     }
 }

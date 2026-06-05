@@ -13,31 +13,32 @@ public record Seat(
         SeatNumber seatNumber,
         long price,
         SeatStatus status,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
     public static Seat create(Long scheduleId, int seatNumber, long price) {
         if (price < 0) {
             throw new BusinessException(ErrorCode.SEAT_INVALID_PRICE);
         }
-        return new Seat(null, scheduleId, SeatNumber.of(seatNumber), price, SeatStatus.AVAILABLE, null);
+        return new Seat(null, scheduleId, SeatNumber.of(seatNumber), price, SeatStatus.AVAILABLE, null, null);
     }
 
     public Seat reserve() {
         if (this.status != SeatStatus.AVAILABLE) {
             throw new BusinessException(ErrorCode.SEAT_NOT_AVAILABLE);
         }
-        return new Seat(id, scheduleId, seatNumber, price, SeatStatus.RESERVED, createdAt);
+        return new Seat(id, scheduleId, seatNumber, price, SeatStatus.RESERVED, createdAt, updatedAt);
     }
 
     public Seat confirm() {
         if (this.status != SeatStatus.RESERVED) {
             throw new BusinessException(ErrorCode.SEAT_NOT_RESERVED);
         }
-        return new Seat(id, scheduleId, seatNumber, price, SeatStatus.CONFIRMED, createdAt);
+        return new Seat(id, scheduleId, seatNumber, price, SeatStatus.CONFIRMED, createdAt, updatedAt);
     }
 
     public Seat release() {
-        return new Seat(id, scheduleId, seatNumber, price, SeatStatus.AVAILABLE, createdAt);
+        return new Seat(id, scheduleId, seatNumber, price, SeatStatus.AVAILABLE, createdAt, updatedAt);
     }
 
     public boolean isAvailable() {

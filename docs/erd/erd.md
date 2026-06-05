@@ -63,6 +63,7 @@ erDiagram
     bigint price "좌석 가격 (원)"
     varchar status "AVAILABLE / RESERVED / CONFIRMED"
     timestamp created_at "등록 일시"
+    timestamp updated_at "수정 일시"
   }
 
   RESERVATION {
