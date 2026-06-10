@@ -30,7 +30,6 @@ erDiagram
     bigint concert_id FK "콘서트 FK"
     varchar token "UUID 토큰값 (Unique)"
     varchar status "WAITING / ACTIVE / EXPIRED"
-    int queue_position "대기 순번"
     timestamp activated_at "ACTIVE 전환 일시"
     timestamp expired_at "만료 예정 일시"
     timestamp created_at "발급 일시"
@@ -160,7 +159,6 @@ erDiagram
 | `concert_id` | BIGINT | NOT NULL | FK | 콘서트 식별자 → CONCERT.concert_id |
 | `token` | VARCHAR(36) | NOT NULL | | UUID 토큰 값 (Unique) |
 | `status` | VARCHAR(10) | NOT NULL | | 토큰 상태 : WAITING / ACTIVE / EXPIRED |
-| `queue_position` | INT | NULL | | 대기 순번 (WAITING 상태일 때만 유효) |
 | `activated_at` | TIMESTAMP | NULL | | ACTIVE 전환 일시 |
 | `expired_at` | TIMESTAMP | NOT NULL | | 만료 예정 일시 |
 | `created_at` | TIMESTAMP | NOT NULL | | 토큰 발급 일시 |

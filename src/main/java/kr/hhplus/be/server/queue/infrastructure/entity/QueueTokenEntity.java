@@ -43,13 +43,10 @@ public class QueueTokenEntity extends BaseTimeEntity {
     @Column(name = "status", nullable = false, length = 10)
     private String status;
 
-    @Column(name = "queue_position")
-    private Integer queuePosition;
-
     @Column(name = "activated_at")
     private LocalDateTime activatedAt;
 
-    @Column(name = "expired_at", nullable = false)
+    @Column(name = "expired_at")
     private LocalDateTime expiredAt;
 
     public static QueueTokenEntity from(QueueToken queueToken) {
@@ -59,7 +56,6 @@ public class QueueTokenEntity extends BaseTimeEntity {
             .concertId(queueToken.concertId())
             .token(queueToken.token().getValue())
             .status(queueToken.status().name())
-            .queuePosition(queueToken.queuePosition())
             .activatedAt(queueToken.activatedAt())
             .expiredAt(queueToken.expiredAt())
             .build();
@@ -68,7 +64,7 @@ public class QueueTokenEntity extends BaseTimeEntity {
     public QueueToken toModel() {
         return new QueueToken(
             this.id, this.userId, this.concertId, Token.of(this.token),
-            TokenStatus.valueOf(this.status), this.queuePosition,
+            TokenStatus.valueOf(this.status),
             this.activatedAt, this.expiredAt, this.getCreatedAt()
         );
     }

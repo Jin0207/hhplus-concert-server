@@ -13,35 +13,40 @@ public record QueueToken(
         Long concertId,
         Token token,
         TokenStatus status,
-        Integer queuePosition,
         LocalDateTime activatedAt,
         LocalDateTime expiredAt,
         LocalDateTime createdAt
 ) {
-    public static QueueToken create(Long userId, Long concertId, int queuePosition, LocalDateTime expiredAt) {
+    public static QueueToken create(Long userId, Long concertId) {
         return new QueueToken(null, userId, concertId, Token.generate(),
-                TokenStatus.WAITING, queuePosition, null, expiredAt, null);
+                TokenStatus.WAITING, null, null, null);
     }
 
     public QueueToken activate() {
         if (this.status != TokenStatus.WAITING) {
             throw new BusinessException(ErrorCode.QUEUE_TOKEN_NOT_WAITING);
         }
+
+        LocalDateTime now = LocalDateTime.now();
+
         return new QueueToken(id, userId, concertId, token,
-                TokenStatus.ACTIVE, null, LocalDateTime.now(), expiredAt, createdAt);
+        TokenStatus.ACTIVE,
+        now,
+        now.plusMinutes(5),
+        createdAt);
     }
 
     public QueueToken expire() {
         return new QueueToken(id, userId, concertId, token,
-                TokenStatus.EXPIRED, queuePosition, activatedAt, expiredAt, createdAt);
+                TokenStatus.EXPIRED, activatedAt, expiredAt, createdAt);
     }
 
     public boolean isActive() {
-        return this.status == TokenStatus.ACTIVE;
+        return this.status == TokenStatus.ACTIVE && !isExpired();
     }
 
     public boolean isExpired() {
         return this.status == TokenStatus.EXPIRED
-                || LocalDateTime.now().isAfter(this.expiredAt);
+                || (this.expiredAt != null && LocalDateTime.now().isAfter(this.expiredAt));
     }
 }

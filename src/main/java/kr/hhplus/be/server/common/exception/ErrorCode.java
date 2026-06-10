@@ -30,6 +30,7 @@ public enum ErrorCode {
     QUEUE_TOKEN_NOT_ACTIVE("Q002", "활성화된 토큰이 아닙니다.", 401),
     QUEUE_TOKEN_ALREADY_EXPIRED("Q003", "이미 만료된 토큰입니다.", 401),
     QUEUE_TOKEN_NOT_WAITING("Q004", "WAITING 상태의 토큰만 활성화할 수 있습니다.", 409),
+    QUEUE_TOKEN_ALREADY_EXISTS("Q005", "이미 해당 콘서트의 대기열에 등록되어 있습니다.", 409),
 
     // ===================== Reservation =====================
     RESERVATION_NOT_FOUND("R001", "예약을 찾을 수 없습니다.", 404),
