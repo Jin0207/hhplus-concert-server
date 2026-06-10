@@ -18,12 +18,10 @@ public class ConcertScheduleRepositoryImpl implements ConcertScheduleRepository{
 
     @Override
     public List<ConcertSchedule> findAvailableDates(Long concertId){
-        List<ConcertSchedule> concertSchedules = jpaRepository.findAvailableDatesByConcertId(concertId)
+        return jpaRepository.findAvailableDatesByConcertId(concertId)
             .stream()
             .map(ConcertScheduleEntity::toModel)
             .toList();
-        
-        return concertSchedules;
     }
 
     @Override
