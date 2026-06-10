@@ -45,7 +45,9 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok")
 	// Swagger
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.0")
-    // Test
+    // Redis
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	// Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 	testImplementation("org.testcontainers:junit-jupiter")
