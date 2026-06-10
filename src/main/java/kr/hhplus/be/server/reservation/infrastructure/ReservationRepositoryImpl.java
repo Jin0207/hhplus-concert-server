@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.reservation.infrastructure;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -16,10 +18,31 @@ public class ReservationRepositoryImpl implements ReservationRepository{
     private final ReservationJpaRepository jpaRepository;
 
     @Override
-    public Optional<Reservation> reserveSeat(Long userId, Long scheduleId, Long seatId) {
-        Reservation reservation = Reservation.create(userId, seatId, scheduleId);
-        ReservationEntity saved = jpaRepository.save(ReservationEntity.from(reservation));
-        return Optional.of(saved.toModel());
+    public Reservation save(Reservation reservation) {
+        return jpaRepository.save(ReservationEntity.from(reservation)).toModel();
+    }
+
+    @Override
+    public List<Reservation> findExpiredPendingReservation(LocalDateTime now) {
+        return jpaRepository.findExpiredPendingReservation(now)
+            .stream()
+            .map(ReservationEntity :: toModel)
+            .toList();
+    }
+
+    @Override
+    public List<Reservation> saveAll(List<Reservation> reservations) {
+        List<ReservationEntity> entities = reservations.stream()
+            .map(ReservationEntity::from)
+            .toList();
+        
+        return jpaRepository.saveAll(entities).stream()
+        .map(ReservationEntity::toModel)
+        .toList();
     }
     
+    @Override
+    public int expireOverdueReservations(LocalDateTime now) {
+        return jpaRepository.expireOverdueReservations(now);
+    }
 }
