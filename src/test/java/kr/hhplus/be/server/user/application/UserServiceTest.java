@@ -19,15 +19,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import kr.hhplus.be.server.common.exception.BusinessException;
 import kr.hhplus.be.server.common.exception.ErrorCode;
+import kr.hhplus.be.server.user.domain.model.PointHistory;
 import kr.hhplus.be.server.user.domain.model.User;
 import kr.hhplus.be.server.user.domain.repository.LockableUserRepository;
+import kr.hhplus.be.server.user.domain.repository.PointHistoryRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
     
     @Mock
     private LockableUserRepository userRepository;
-    
+
+    @Mock
+    private PointHistoryRepository historyRepository;
+
     @InjectMocks
     private UserService userService;
 
@@ -86,6 +91,7 @@ public class UserServiceTest {
         
         verify(userRepository).findByIdWithLock(userId);
         verify(userRepository).save(any());
+        verify(historyRepository).save(any(PointHistory.class));
     }
 
     @Test

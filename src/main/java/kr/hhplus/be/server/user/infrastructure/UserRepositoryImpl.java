@@ -29,10 +29,6 @@ public class UserRepositoryImpl implements LockableUserRepository {
 
     @Override
     public User save(User user) {
-        UserEntity entity;
-
-        entity = UserEntity.from(user);
-
-        return jpaRepository.save(entity).toModel();
+        return jpaRepository.save(UserEntity.from(user)).toModel();
     }
 }
