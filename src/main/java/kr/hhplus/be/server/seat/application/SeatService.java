@@ -29,4 +29,16 @@ public class SeatService {
         log.debug("좌석 목록 - {}", list);
         return list;
     }
+
+    public Seat getSeat(Long seatId, Long scheduleId){
+        Seat seat = seatRepository.findSeatByIdAndScheduleIdForUpdate(seatId, scheduleId)
+                    .orElseThrow(() -> new BusinessException(ErrorCode.SEAT_NOT_FOUND));
+        log.debug("좌석 - {}", seat);
+        
+        return seat;
+    }
+
+    public Seat save(Seat seat){
+        return seatRepository.save(seat);
+    }
 }
