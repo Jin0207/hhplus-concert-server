@@ -70,7 +70,7 @@ public class ReservationFacadeTest {
 
                 availableSeat = new Seat(seatId, scheduleId,
                         SeatNumber.of(1), 50_000L, SeatStatus.AVAILABLE, now, null);
-                reservation = new Reservation(1L, userId, seatId, scheduleId,
+                reservation = new Reservation(1L, userId, seatId, scheduleId, 50_000L,
                         ReservationStatus.PENDING, now, now.plusMinutes(5), null, null);
         }
 
@@ -80,7 +80,7 @@ public class ReservationFacadeTest {
                 // given
                 when(queueTokenService.getUserIdByToken(tokenValue)).thenReturn(activeToken);
                 when(seatService.getSeat(seatId, scheduleId)).thenReturn(availableSeat);
-                when(reservationService.reserveSeat(userId, scheduleId, seatId)).thenReturn(reservation);
+                when(reservationService.reserveSeat(userId, scheduleId, seatId, 50_000L)).thenReturn(reservation);
 
                 // when
                 Reservation result = reservationFacade.reserveSeat(tokenValue, scheduleId, seatId);
@@ -95,8 +95,7 @@ public class ReservationFacadeTest {
                 verify(queueTokenService).getUserIdByToken(tokenValue);
                 verify(seatService).getSeat(seatId, scheduleId);
                 verify(seatService).save(any(Seat.class));
-                verify(reservationService).reserveSeat(userId, scheduleId, seatId);
-                verify(queueTokenService).expiredToken(activeToken);
+                verify(reservationService).reserveSeat(userId, scheduleId, seatId, 50_000L);
         }
 
         @Test

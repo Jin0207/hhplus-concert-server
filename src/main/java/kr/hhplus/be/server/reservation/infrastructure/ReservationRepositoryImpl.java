@@ -23,6 +23,11 @@ public class ReservationRepositoryImpl implements ReservationRepository{
     }
 
     @Override
+    public Optional<Reservation> findById(Long id) {
+        return jpaRepository.findById(id).map(ReservationEntity::toModel);
+    }
+
+    @Override
     public List<Reservation> findExpiredPendingReservation(LocalDateTime now) {
         return jpaRepository.findExpiredPendingReservation(now)
             .stream()

@@ -70,6 +70,7 @@ erDiagram
     bigint user_id FK "사용자 FK"
     bigint seat_id FK "좌석 FK"
     bigint schedule_id FK "콘서트 일정 FK"
+    bigint price "예약 시점 좌석 가격 (SEAT.price 스냅샷)"
     varchar status "PENDING / CONFIRMED / CANCELLED / EXPIRED"
     timestamp created_at "예약 요청 일시"
     timestamp expires_at "임시 배정 만료 일시"
@@ -222,6 +223,7 @@ erDiagram
 | `user_id` | BIGINT | NOT NULL | FK | 사용자 식별자 → USER.user_id |
 | `seat_id` | BIGINT | NOT NULL | FK | 좌석 식별자 → SEAT.seat_id |
 | `schedule_id` | BIGINT | NOT NULL | FK | 콘서트 일정 식별자 → CONCERT_SCHEDULE.schedule_id |
+| `price` | BIGINT | NOT NULL | | 예약 시점 좌석 가격 (SEAT.price 스냅샷, 원 단위) |
 | `status` | VARCHAR(15) | NOT NULL | | 예약 상태 : PENDING / CONFIRMED / CANCELLED / EXPIRED |
 | `created_at` | TIMESTAMP | NOT NULL | | 예약 요청 일시 |
 | `expires_at` | TIMESTAMP | NOT NULL | | 임시 배정 만료 일시 (created_at + 5분) |
@@ -239,7 +241,7 @@ erDiagram
 | `payment_id` | BIGINT | NOT NULL | PK | 결제 식별자 (Auto Increment) |
 | `reservation_id` | BIGINT | NOT NULL | FK | 예약 식별자 → RESERVATION.reservation_id |
 | `user_id` | BIGINT | NOT NULL | FK | 사용자 식별자 → USER.user_id |
-| `amount` | BIGINT | NOT NULL | | 결제 금액 (원 단위, SEAT.price와 일치) |
+| `amount` | BIGINT | NOT NULL | | 결제 금액 (원 단위, RESERVATION.price와 일치) |
 | `status` | VARCHAR(15) | NOT NULL | | 결제 상태 : SUCCESS / FAILED / REFUNDED |
 | `paid_at` | TIMESTAMP | NULL | | 결제 완료 일시 (SUCCESS 상태일 때만 설정) |
 | `created_at` | TIMESTAMP | NOT NULL | | 결제 시도 일시 |
@@ -327,3 +329,6 @@ erDiagram
 
 **QUEUE_TOKEN 콘서트 단위 발급**
 콘서트별 대기열을 분리하여 특정 콘서트에만 트래픽이 집중되는 상황을 독립적으로 제어.
+
+**RESERVATION.price 가격 스냅샷**
+좌석 선택 시점의 `SEAT.price`를 `RESERVATION.price`에 복사(스냅샷)하여 저장. `schedule_id` 비정규화와 동일한 이유로 의도적 비정규화. 결제 시 SEAT를 재조회하지 않고 `RESERVATION.price`를 직접 사용하며, 동적 가격 변경이나 좌석 재배정 시에도 사용자가 예약 시 동의한 금액이 정확히 보존됨.

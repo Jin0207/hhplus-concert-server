@@ -44,12 +44,13 @@ public class ReservationServiceTest {
     void 좌석_예약_성공() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Reservation reservation = new Reservation(1L, userId, seatId, scheduleId,
+        long price = 50_000L;
+        Reservation reservation = new Reservation(1L, userId, seatId, scheduleId, price,
                 ReservationStatus.PENDING, now, now.plusMinutes(5), null, null);
         when(reservationRepository.save(any(Reservation.class))).thenReturn(reservation);
 
         // when
-        Reservation result = reservationService.reserveSeat(userId, scheduleId, seatId);
+        Reservation result = reservationService.reserveSeat(userId, scheduleId, seatId, price);
 
         // then
         assertThat(result).isNotNull();

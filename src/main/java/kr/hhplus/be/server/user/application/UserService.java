@@ -50,6 +50,17 @@ public class UserService {
         return saved;
     }
 
+    // 포인트 사용
+    @Transactional
+    public User usePoint(Long id, long amount){
+        UserValidator.validateAmount(amount, "결제");
+        User user = this.getUserWithLock(id);
+        User updatedUser = user.usePoint(amount);
+        User saved = this.save(updatedUser);
+        historyRepository.save(PointHistory.create(id, PointType.USE, amount));
+        return saved;
+    }
+
     // 저장
     private User save(User user){
         return userRepository.save(user);

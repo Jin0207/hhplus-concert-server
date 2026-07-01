@@ -11,6 +11,7 @@ public record Reservation(
         Long userId,
         Long seatId,
         Long scheduleId,
+        long price,
         ReservationStatus status,
         LocalDateTime createdAt,
         LocalDateTime expiresAt,
@@ -19,8 +20,8 @@ public record Reservation(
 ) {
     private static final long TEMP_ASSIGN_MINUTES = 5L;
 
-    public static Reservation create(Long userId, Long seatId, Long scheduleId) {
-        return new Reservation(null, userId, seatId, scheduleId,
+    public static Reservation create(Long userId, Long seatId, Long scheduleId, long price) {
+        return new Reservation(null, userId, seatId, scheduleId, price,
                 ReservationStatus.PENDING, null,
                 LocalDateTime.now().plusMinutes(TEMP_ASSIGN_MINUTES), null, null);
     }
@@ -29,7 +30,7 @@ public record Reservation(
         if (this.status != ReservationStatus.PENDING) {
             throw new BusinessException(ErrorCode.RESERVATION_NOT_PENDING);
         }
-        return new Reservation(id, userId, seatId, scheduleId,
+        return new Reservation(id, userId, seatId, scheduleId, price,
                 ReservationStatus.CONFIRMED, createdAt, expiresAt, LocalDateTime.now(), cancelledAt);
     }
 
@@ -37,7 +38,7 @@ public record Reservation(
         if (this.status == ReservationStatus.CONFIRMED) {
             throw new BusinessException(ErrorCode.RESERVATION_ALREADY_CONFIRMED);
         }
-        return new Reservation(id, userId, seatId, scheduleId,
+        return new Reservation(id, userId, seatId, scheduleId, price,
                 ReservationStatus.CANCELLED, createdAt, expiresAt, confirmedAt, LocalDateTime.now());
     }
 
@@ -45,7 +46,7 @@ public record Reservation(
         if (this.status != ReservationStatus.PENDING) {
             throw new BusinessException(ErrorCode.RESERVATION_NOT_PENDING);
         }
-        return new Reservation(id, userId, seatId, scheduleId,
+        return new Reservation(id, userId, seatId, scheduleId, price,
                 ReservationStatus.EXPIRED, createdAt, expiresAt, confirmedAt, cancelledAt);
     }
 

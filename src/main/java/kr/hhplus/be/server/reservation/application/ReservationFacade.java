@@ -34,11 +34,8 @@ public class ReservationFacade {
         seatService.save(seat.reserve());
 
         // 예약 임시 배정(5분)
-        Reservation reservation = reservationService.reserveSeat(queueToken.userId(), scheduleId, seatId);
+        Reservation reservation = reservationService.reserveSeat(queueToken.userId(), scheduleId, seatId, seat.price());
 
-        // 토큰 만료처리
-        queueTokenService.expiredToken(queueToken);
-        
         return reservation;
     }
 }

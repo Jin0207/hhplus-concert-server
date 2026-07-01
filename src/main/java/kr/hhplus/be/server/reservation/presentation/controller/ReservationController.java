@@ -48,9 +48,6 @@ public class ReservationController {
         ) {
                 Reservation reservation = reservationFacade.reserveSeat(token, request.scheduleId(), request.seatId());
 
-                return ResponseEntity.ok(new ReservationResponse(
-                        reservation.id(), reservation.userId(), reservation.scheduleId(),
-                        reservation.seatId(), reservation.status(), reservation.expiresAt()
-                ));
+                return ResponseEntity.ok(ReservationResponse.from(reservation));
         }
 }

@@ -39,6 +39,9 @@ public class ReservationEntity extends BaseTimeEntity {
     @Column(name = "schedule_id", nullable = false)
     private Long scheduleId;
 
+    @Column(name = "price", nullable = false)
+    private long price;
+
     @Column(name = "status", nullable = false, length = 15)
     private String status;
 
@@ -57,6 +60,7 @@ public class ReservationEntity extends BaseTimeEntity {
             .userId(reservation.userId())
             .seatId(reservation.seatId())
             .scheduleId(reservation.scheduleId())
+            .price(reservation.price())
             .status(reservation.status().name())
             .expiresAt(reservation.expiresAt())
             .confirmedAt(reservation.confirmedAt())
@@ -66,7 +70,7 @@ public class ReservationEntity extends BaseTimeEntity {
 
     public Reservation toModel() {
         return new Reservation(
-            this.id, this.userId, this.seatId, this.scheduleId,
+            this.id, this.userId, this.seatId, this.scheduleId, this.price,
             ReservationStatus.valueOf(this.status), this.getCreatedAt(),
             this.expiresAt, this.confirmedAt, this.cancelledAt
         );
